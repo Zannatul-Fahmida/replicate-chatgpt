@@ -1,16 +1,18 @@
 import React from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import ChatCards from "./ChatCards";
+import ChatInput from "./ChatInput";
 
 const Chat = () => {
   return (
-    <div className="bg-neutral-800 md:w-screen h-screen p-1">
+    <div className="bg-neutral-800 md:w-screen min-h-screen p-1">
       <div className=" md:block hidden">
         <button className="flex items-center gap-1 text-lg font-semibold p-2 text-white hover:bg-neutral-700 rounded-lg">
           ChatGPT <span className="text-neutral-400">3.5</span>{" "}
           <MdKeyboardArrowDown className="text-neutral-500" />
         </button>
       </div>
-      <div className="flex flex-col items-center gap-4 my-16">
+      <div className="flex flex-col items-center gap-4 my-20">
         <div className="h-12 w-12 flex-shrink-0">
           <div className="relative flex h-full items-center justify-center rounded-full bg-white text-gray-950">
             <svg
@@ -27,6 +29,12 @@ const Chat = () => {
         <h2 className="text-white text-2xl font-semibold">
           How can I help you today?
         </h2>
+      </div>
+      <div className="md:px-36 mt-40">
+        <ChatCards />
+      </div>
+      <div className="md:px-32 mt-3">       
+      <ChatInput />
       </div>
     </div>
   );
