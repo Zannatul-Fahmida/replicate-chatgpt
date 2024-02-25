@@ -6,7 +6,7 @@ import ChatInput from "./ChatInput";
 const Chat = () => {
   return (
     <div className="bg-neutral-800 md:w-screen min-h-screen p-1">
-      <div className=" md:block hidden">
+      <div className="md:block hidden">
         <button className="flex items-center gap-1 text-lg font-semibold p-2 text-white hover:bg-neutral-700 rounded-lg">
           ChatGPT <span className="text-neutral-400">3.5</span>{" "}
           <MdKeyboardArrowDown className="text-neutral-500" />
@@ -30,11 +30,12 @@ const Chat = () => {
           How can I help you today?
         </h2>
       </div>
-      <div className="md:px-36 mt-40">
+      <div className="md:px-36 mt-36">
         <ChatCards />
       </div>
-      <div className="md:px-32 mt-3">       
+      <div className="md:px-32 mt-3 text-center">       
       <ChatInput />
+      <small className="text-neutral-500">ChatGPT can make mistakes. Consider checking important information.</small>
       </div>
     </div>
   );
