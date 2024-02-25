@@ -4,6 +4,7 @@ import ChatCards from "./ChatCards";
 import ChatInput from "./ChatInput";
 import Reply from "./Reply";
 import Message from "./Message";
+import axios from "axios";
 
 const Chat = () => {
   const [replies, setReplies] = useState([]);
@@ -14,31 +15,43 @@ const Chat = () => {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessageToReplicate(inputValue);
-    setMessages([...messages, inputValue]); 
+    const generatedText = await sendMessageToOpenAi(inputValue);
+    if (generatedText) {
+      setMessages([...messages, generatedText]); 
+    }
     setInputValue("");
   };
+  
 
-  const sendMessageToReplicate = async (message: string) => {
+  const sendMessageToOpenAi = async (message: string) => {
     try {
-      const response = await fetch(`API_ENDPOINT_HERE`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        'https://api.openai.com/v1/completions',
+        {
+          model: 'gpt-3.5-turbo', 
+          prompt: message,
+          max_tokens: 150, 
+          temperature: 0.7 
         },
-        body: JSON.stringify({ message }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      setReplies(data.replies);
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+          }
+        }
+      );
+  
+      const generatedText = response.data.choices[0].text.trim();
+      console.log(generatedText);
+      return generatedText;
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error sending message to OpenAI:', error);
+      return null;
     }
-  };
+  };  
+  
   return (
     <div className="bg-neutral-800 md:w-screen min-h-screen p-1">
       <div className="md:block hidden sticky top-0 bg-neutral-800">
