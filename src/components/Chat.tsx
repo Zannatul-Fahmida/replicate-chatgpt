@@ -7,7 +7,7 @@ import Message from "./Message";
 import axios from "axios";
 
 const Chat = () => {
-  const [replies, setReplies] = useState([]);
+  const [replies, setReplies] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
 
@@ -19,8 +19,9 @@ const Chat = () => {
     e.preventDefault();
     const generatedText = await sendMessageToOpenAi(inputValue);
     if (generatedText) {
-      setMessages([...messages, generatedText]); 
+      setReplies([...replies, generatedText]); 
     }
+    setMessages([...messages, inputValue]);
     setInputValue("");
   };
   
@@ -28,12 +29,10 @@ const Chat = () => {
   const sendMessageToOpenAi = async (message: string) => {
     try {
       const response = await axios.post(
-        'https://api.openai.com/v1/completions',
+        'https://api.openai.com/v1/chat/completions',
         {
           model: 'gpt-3.5-turbo', 
           prompt: message,
-          max_tokens: 150, 
-          temperature: 0.7 
         },
         {
           headers: {
@@ -80,7 +79,7 @@ const Chat = () => {
               How can I help you today?
             </h2>
           </div>
-          <div className="md:px-36 mt-36">
+          <div className="md:px-36 mt-36 mb-24 md:mb-0">
             <ChatCards />
           </div>
         </div>
@@ -96,7 +95,7 @@ const Chat = () => {
           </div>
         </div>
       )}
-      <div className="md:px-32 mt-3 text-center fixed bottom-0 w-4/5 bg-neutral-800">
+      <div className="md:px-32 mt-3 text-center fixed bottom-0 md:w-4/5 bg-neutral-800">
         <ChatInput
           inputValue={inputValue}
           handleSubmit={handleSubmit}
