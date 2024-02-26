@@ -80,7 +80,7 @@ const Chat = () => {
             </h2>
           </div>
           <div className="md:px-36 mt-36 mb-24 md:mb-0">
-            <ChatCards />
+            <ChatCards setInputValue={setInputValue} />
           </div>
         </div>
       ) : (
